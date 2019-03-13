@@ -1,0 +1,130 @@
+- Docker é uma tecnologia de virtualização, mas não tradicional, baseado em máquinas, como Virtual Box.
+- Engine de administração de Container.
+- Container é um processo isolado do seu sistema, com um sistema de arquivos completo, isolado. Com isso vc roda seu software com as 
+dependências que você precisa. Mas ele ainda precisa de alguns recursos da máquina host, como o kernel.
+- O Container necessita de menos recursos que uma máquina virtual convencional. Como ele é baseado nos xlcs, diferente do virtual box,
+o container deve estar de acordo com o seu sistema operacional linux. Na virtualização convencional, vc podia subir uma máquina linux em
+um host Window ou em um host MAC.
+- Você pode controlar a rede, cpu, de memória e etc. 
+
+---->Why not Virtual Machines:
+- Revolucionária.
+- Nuvem vem desse conceito, foi viabilizada.
+- Elasticidade[Recursos].
+- Personalizar recursos.
+- O Container exije necessidade menor de recursos que uma VM.
+- 20 VM >>>>>> 20 Containers em uma máquina.
+- O Docker tem seu gerenciador de container, que fica em cima do seu host OS que pode ser, por exemplo em HadRat e o Container ser em Debian.
+O gerenciador cuida disso.
+- O tempo de start de um processo[conatiner] é bem menor do que start de um Guest OS[que está a cima do hipervisor, a cima do host OS]. Mas no 
+Conatiner você compartilha recursos com o Host OS[libs/bins]
+- O Docker é baseado na tecnologia LXC. O grande problema da tecnologia de container era genrenciar o próprio, era necessaŕio conhecimento bem 
+específico. O docker adicionou o Docker Engine, para faciliatr com o CLI, REST API e o Docker files. O DOcker facilita e faz juz a eficiência da 
+tecnologia xlc.
+
+----->Container:
+- É um processo segregado que utiliza o mesmo Kernel.
+- Focar Container para um uso só.
+- Organização, várias softwares sendo executados em separado.
+- Tal processo tem seu próprio sistema de arquivo. A partir deste, sub-processos podem ser criados, que iram depender deste.
+- Como os seus processos podem ter necessidades muito pequenas é melhor deixá-las saparadas.
+- Um conatiner com várias aplicações pode limitar o avanço profissional de sua aplicação.
+- Quanto mais segragado, melhor.
+- chroot [tal processo só vai conseguir gerenciar o que tem dentro da pasta e subpastas]. VM é o tipo de isolamento completo, com um novo SO. O conatiner está
+no meio disso tudo.
+
+----->Imagem Docker:
+- É um modelo de sistema de arquivo usado para criar um container.
+- Container está relacionado a Processo, relacionado a memória. A imagem é um arquivo de modelo.
+- O container preciso de uma imagem para que possa ser criado.
+- Build: tem um arquivo descritor com todos os passos para gerar a imagem, diferente do commit que não possua uma documentação. 
+Com isso vc pode replicar tal imagem quantas vezes necessárias.
+- Docker Hub, organizados em repositórios. Imagens diferenciadas em Tags.
+- As imagens são compostas por uma ou mais camadas[layers], que é cada versão da imagem. Cada alteração, ou um conjunto, gera uma layer diferente.
+- Quando se gera um Container ele gera a imagem a partir de toda as layers da imagem, vc pode ter 10 layters de leitura para formar sua imagem. Após criar 
+o Container, a última camada cria uma layer que por sua vez pode ser editada.
+
+---> Container x Imagem
+- O Container é como se fosse a intância e a Imagem que pode ser a Classe, o modelo.
+- O Processo start a partir daquela imagem.
+- Com uma imagem se cria múltiplos containers.
+- container = Processo
+- imagem = sistema de arquivo isolado
+
+---> Arquitetura:
+- Se pode consumir o dockler via api, isso é legal!
+
+---->Instalação
+-  No MAC OS e Windows do 10 <. Vc roda o seu Docker Engine em uma VM e o consome via Docker Client no Host OS.
+
+--->Comando RUN
+- Baixou imagem - docker image pull;
+- Criou Container - docker container creater;
+- Start o container - docker container start;
+- Executou o Container - docker conatiner exec - > em modo interativo[Ele executa o container, mostra o resultado no terminal e depois finaliza];
+
+-----> Exemplificando:
+- bash --version : No seu Hoist OS.
+- docker container run debian bash --version : No seu container.
+
+----> Comandos:
+docker container ps : Containers Ativos
+docker container ps -a : Todos mesmo o parados.
+docker container run --rm debian bash --version :  ele executa, mais remove da lista. Ele não vai aparecer na lsita do ps[ls] -a.
+docker container run -it debian bash :  modo interativo no terminal. 
+- OBS: Toda vez que vc roda o comando run ele cria um container diferente.
+docker container run --name mydeb -it debian bash : nomeando um container.
+docker container start -ai mydeb : start o container e acessa o terminal, efetivando tudo o que vc fizer[tipo criar um arquivo novo];
+   docker container run -p 8000:80 nginx -> 80 é a porta que o nginx será startarad internamente, sendo seu acesso externamente através da porta 8000.
+   curl http://localhost:8000
+docker container run -p 9000:80 -v $(pwd)/html:/usr/share/nginx/html nginx : -v efetua mapeamento de volume (pasta a ser mapeado):[pasta de origem];
+                                                                             -p executa de modo interativo para acessar use curl http://localhost:9000
+docker container run -d --name ex-deamon-basic -p 8000:80 -v $(pwd)/html:/usr/share/nginx/html nginx [deamon] executando em background 
+docker container stop ex-deamon-basic
+docker container start ex-deamon-basic
+docker container restart ex-deamon-basic
+
+docker container exec ex-deamon-basic uname -or [só roda quando o container estiver sido startado]
+
+docker container ps == docker container ls = docker container list =  docker ps
+
+docker container logs ex-deamon-basic [mostra só o hgistórico de logs de um container, estando ativo ou não]
+docker container inspect ex-deamon-basic [só com caontainer startado] 
+
+docker image ls[lista as images] 
+docker rm[container] or docker rmi[image] or docker container rm db9383a32d89 or docker image rm 59c542ceb57a
+
+----> Background
+- sem a interatividade com o console, sem interação direta via termianl com o container.
+
+----> Images:
+- são organizadas em registrys, o docker hub é o mais utilizado. Dentro do registry tem vários repositórios, com várias tags suportadas. Tag Latest.
+ docker image ls 
+ docker image pull redist:latest
+ docker image inspect redis:latest
+- toda image tem um identificador único char 256, não viável trabalhar com ele. Assim se tem nomes e tags para acessar as images.  
+ docker image tag redis:latest cod3r-redis, vai existir duas images com o mesmo hash[quer dizer que é a mesma image]
+ docker image rm redis:latest cod3r-redis [remove as duas imagens]
+- Tags são ponteiros para uma determinado Hash de uma image que são versões do software no repositório.
+- não é aconselhável apontar par a última versão, óbvio!!
+- atualiza, testa, altera para suportar a nova versão e etc. DEV == PROD. Atualização, preferencialmente devem ser de forma manual é muito mais seguro.
+
+-----> 7 comandos mais importantes de image:
+- docker image pull[chamado implicitamente ao rodar o run, caso a image não exista localmente]
+- docker image ls / or ps
+- docker image rm [nome das tags / hash ou sequência]
+- docker image inspect image-tag
+- dokcer image tag fonte my-tag-name
+- docker container build 
+- docker image push [aplica nova tag, deu build] pode publicar no registry local ou do docker hub.
+
+----> Docker Hub e Docker registry
+- Registry é um serviço server/side para registrar e resgatar imagens. Vc pode ter um para sua empresa. Disponibiliza uma api para baixar e homologar suas imagens.
+- O Docker HUB contém um rergistry com mais algumas coisas, imagens oficiais[time docker]. Aqui você pode subir/biaxra suas imagens.
+
+-----> Construindo a 1º imagem
+- docker image build -t ex-simple-build[tag] .[pasta para achar o Dockerfile]
+- Dockerfile deve seguir o nome bem especificadamente  
+
+obs: por um resumo em cada artigo;
+
