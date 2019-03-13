@@ -123,8 +123,16 @@ docker rm[container] or docker rmi[image] or docker container rm db9383a32d89 or
 - O Docker HUB contém um rergistry com mais algumas coisas, imagens oficiais[time docker]. Aqui você pode subir/biaxra suas imagens.
 
 -----> Construindo a 1º imagem
-- docker image build -t ex-simple-build[tag] .[pasta para achar o Dockerfile]
-- Dockerfile deve seguir o nome bem especificadamente  
+- docker image build -t ex-simple-build[-t é para tag] .[pasta para achar o Dockerfile]
+- Dockerfile deve seguir o nome bem especificadamente 
+  docker image build -t ex-build-arg . 
+  docker container run ex-build-arg bash -c 'echo $S3_BUCKET'
+  docker image build --build-arg S3_BUCKET=myapp -t ex-build-arg .
+  docker image inspect --format="{{index .Config.Labels \"maintainer\"}}" ex-build-arg [filtrando e encontranto alguma variavel especifica]
+
+----> Transferência de arquivos
+  docker image build -t build-copy .
+  docker container run -p 9000:80 build-copy
 
 obs: por um resumo em cada artigo;
 
