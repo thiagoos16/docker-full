@@ -136,3 +136,8 @@ docker rm[container] or docker rmi[image] or docker container rm db9383a32d89 or
 
 obs: por um resumo em cada artigo;
 
+- Docker file é um descritor que define a imagem que quando executada gera um container
+- cuidado com o uso da tag Latest, pois ele não é uma sintaxe especial é apenas para nível de semântica, é uma questão de convenção.
+No build quanbdo não se especifica a versão da imagem, a versão por default é latest.
+
+
