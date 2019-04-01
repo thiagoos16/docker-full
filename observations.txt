@@ -140,4 +140,35 @@ obs: por um resumo em cada artigo;
 - cuidado com o uso da tag Latest, pois ele não é uma sintaxe especial é apenas para nível de semântica, é uma questão de convenção.
 No build quanbdo não se especifica a versão da imagem, a versão por default é latest.
 
+-----> Subindo para o Docker Hub:
+docker image tag ex-simple-build [unsername docker hub]thiagoos16/simple-build:1.0 [para criar image a subir]
+docker login --username=thiagoos16
+docker image push thiagoos16/simple-build:1.0
 
+----> Redes:
+- segurança
+- expor para mundo exterio só o que for necessaŕio, visando empre a segurança
+- o docker utilizado omodelo de redes Bridge
+- pode criar mecanismos para um container acessar outros modelos de rede
+- Modelos de Bridge:
+  1. Container não acessa a rede. [só para manipular volume, ex.]
+  2. Modelo de Cridge, ponte entre interface de rede container e host e vários containers.
+  3. Host network
+  4. Overlay network -> só no sworm.
+
+A. Rede tipo Node:
+- docker container run --rm --net none alpine -c "ifconfig"
+- sem acesso a containers locais e sem acesso a internamente
+
+B. Rede Bridge:
+- cada container tem sua própria interface derede, mas o bridge permite a comunicação com o host
+- docker container exec -it container1 ping 172.17.0.3, ping do container2 a partir do container1, fazer com que o conatiner1 utilize a internet
+no container2.
+- docker network connect bridge container3
+- docker network disconnect bridge container3
+- um conatiner poderá ter múltiplas redes segregadas no docker
+
+C. Rede HOST:
+- nível de porteção mais baixo.
+- acesso direto as ionterfaces.
+- maior velocidade.
