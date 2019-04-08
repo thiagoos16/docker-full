@@ -156,7 +156,7 @@ docker image push thiagoos16/simple-build:1.0
   3. Host network
   4. Overlay network -> só no sworm.
 
-A. Rede tipo Node:
+A. Rede tipo None:
 - docker container run --rm --net none alpine -c "ifconfig"
 - sem acesso a containers locais e sem acesso a internamente
 
@@ -172,3 +172,11 @@ C. Rede HOST:
 - nível de porteção mais baixo.
 - acesso direto as ionterfaces.
 - maior velocidade.
+
+Múltiplos containers:
+- para cada elemento da aplicação filas, bd, front, back, cada um deles em um container separado
+- senão, não vai ser possível escalar.
+- docker compose referencia vários serviços, descrever esse arquivo que é a composição de vários imagens que vai gerar os containers, 
+cada dockerfile tem uma imagem. O dockercomposer pode referenciar as imagens no docker hub.
+- micro serviços: serviços diferentes, com deploys individuos, eles juntos formam uma aplicação, cada micro é um app indepente, é uma parte 
+independete do sistema. Gerenciar essa quantidade grande serviços fica custoso, com o docker compose faz-se isso de uma forma bem simples. 
