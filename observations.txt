@@ -179,4 +179,4 @@ Múltiplos containers:
 - docker compose referencia vários serviços, descrever esse arquivo que é a composição de vários imagens que vai gerar os containers, 
 cada dockerfile tem uma imagem. O dockercomposer pode referenciar as imagens no docker hub.
 - micro serviços: serviços diferentes, com deploys individuos, eles juntos formam uma aplicação, cada micro é um app indepente, é uma parte 
-independete do sistema. Gerenciar essa quantidade grande serviços fica custoso, com o docker compose faz-se isso de uma forma bem simples. 
+independete do sistema. Gerenciar essa quantidade grande serviços fica custoso, com o docker compose faz-se isso de uma forma bem simples.
